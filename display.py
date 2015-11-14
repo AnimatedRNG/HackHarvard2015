@@ -1,32 +1,34 @@
 import pygame
+from pygame.locals import *
 
 class Renderer:
 
-    def __init__():
+    def __init__(self):
         pygame.init()
-        self.screen = pygame.display.get_surface()
+        SW,SH = 1280, 720
+        self.screen = pygame.display.set_mode((SW,SH))
 
-        self.width, self.height = screen.get_width(), screen.get_height()
-        flags = screen.get_flags()
-        bits = screen.get_bitsize()
+        self.width, self.height = self.screen.get_width(), self.screen.get_height()
+        flags = self.screen.get_flags()
+        bits = self.screen.get_bitsize()
 
         pygame.display.quit()
         pygame.display.init()
 
-        self.screen = pygame.display.set_mode((self.w, self.h), flags^FULLSCREEN, bits)
+        self.screen = pygame.display.set_mode((self.width, self.height), flags^FULLSCREEN, bits)
 
 
-    def loop():
+    def loop(self):
         done = False
         while not done:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     done = True
-        render()
+                render()
 
 
-    def render():
-        screen.fill((0, 0, 0))
+    def render(self):
+        self.screen.fill((0, 0, 0))
         pygame.display.flip()
 
 
