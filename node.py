@@ -36,3 +36,21 @@ def genRule(line, rules):
     assert (line[i + 1] == ' ' or line[i + 1] == '\t'), 'Character after : must be whitespace'
     assert (line[i + 2] == "\"" and line[-2] == "\""), 'Command must be enclosed in quotations'
     currentLevel[move] = line[i + 3: len(line) - 1]
+
+
+def get_child_collapsed_possibilities(rules):
+    collapsed_rules = {}
+    for key, child in rules.iteritems():
+        collapsed_rules[key] = __collapseAllPossibilities_recursive__(child)
+    return collapsed_rules
+
+
+# Collapses each child node into a list of its descendent leaves
+def __collapseAllPossibilities_recursive__(rules):
+    child_list = []
+    for key, child in rules.iteritems():
+        if isinstance(child, dict):
+            child_list += __collapseAllPossibilities_recursive__(child)
+        else:
+            child_list.append(child)
+    return child_list
