@@ -95,20 +95,20 @@ class Renderer2:
             if isinstance(child, basestring):
                 iconHash = str(hash(child))[:8]
                 
-                if child != "C:\\Program Files (x86)\\Audacity\\audacity.exe":
+                if child != "C:\\Program Files (x86)\\Steam\\Steam.exe":
                     #iconName = iconName.replace('\\', '\\\\')
                     print(child)
-                icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
+                icons.loadFile("C:\\Program Files (x86)\\Steam\\Steam.exe", iconHash)
                 #icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
                 self.cachedIcons[child] = icons.imageFromFile(iconHash, 64, 64)
                 return
             for iconName in child:
                 iconHash = str(hash(iconName))[:8]
                 
-                if iconName != "C:\\Program Files (x86)\\Audacity\\audacity.exe":
+                if iconName != "C:\\Program Files (x86)\\Steam\\Steam.exe":
                     #iconName = iconName.replace('\\', '\\\\')
                     print(iconName)
-                icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
+                icons.loadFile("C:\\Program Files (x86)\\Steam\\Steam.exe", iconHash)
                 #icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
                 self.cachedIcons[iconName] = icons.imageFromFile(iconHash, 64, 64)
 
@@ -130,9 +130,9 @@ class Renderer2:
 
 
     def drawCircles(self):
-        dot = pygame.transform.scale(pygame.image.load("circle.bmp"), (64, 64))
-        highlighted_dot = pygame.transform.scale(pygame.image.load("highlighted_circle.bmp"), (64, 64))
-        currently_selected_dot = pygame.transform.scale(pygame.image.load("currently_selected_circle.bmp"), (64, 64))
+        dot = pygame.transform.scale(pygame.image.load("circle.bmp").convert_alpha(), (64, 64))
+        highlighted_dot = pygame.transform.scale(pygame.image.load("highlighted_circle.bmp").convert_alpha(), (64, 64))
+        currently_selected_dot = pygame.transform.scale(pygame.image.load("currently_selected_circle.bmp").convert_alpha(), (64, 64))
         for currDot in self.dotDict:
             if currDot == self.currentNode:
                 self.screen.blit(currently_selected_dot, self.dotDict[currDot])

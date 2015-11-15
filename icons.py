@@ -27,7 +27,7 @@ def loadFile(filename, final_name):
 
 
 def imageFromFile(final_name, width, height):
-    img = pygame.image.load("cache/" + final_name + ".bmp")
+    img = pygame.image.load("cache/" + final_name + ".bmp").convert_alpha()
     pygame.transform.scale(img, (width, height))
     return img
 
