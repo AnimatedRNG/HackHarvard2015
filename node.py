@@ -29,7 +29,8 @@ def genRule(line, rules):
         assert move in MOVES
         if not (move in currentLevel):
             currentLevel[move] = {}
-        currentLevel = currentLevel[move]
+        else:
+            currentLevel = currentLevel[move]
         i += 3
         assert i + 3 < len(line), 'Invaid config at line: \n' + line
 
@@ -48,6 +49,8 @@ def get_child_collapsed_possibilities(rules):
 # Collapses each child node into a list of its descendent leaves
 def __collapseAllPossibilities_recursive__(rules):
     child_list = []
+    if not isinstance(rules, dict):
+        return rules
     for key, child in rules.iteritems():
         if isinstance(child, dict):
             child_list += __collapseAllPossibilities_recursive__(child)

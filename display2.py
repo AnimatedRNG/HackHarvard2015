@@ -38,13 +38,12 @@ class Renderer2:
         self.loading = False
         
         self.currentGesture = node.read_from_file()
+        print("Original tree: " + str(self.currentGesture))
         self.currentNode = (1, 1)
         self.oldNodes = []
         
         self.cachedIcons = {}
         
-        self.select('r_')
-
         clock = pygame.time.Clock()
 
         fullscreenFlags = flags#^FULLSCREEN
