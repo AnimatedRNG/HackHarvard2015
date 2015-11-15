@@ -12,6 +12,7 @@ def loadFile(filename, final_name):
     ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
     ico_y = win32api.GetSystemMetrics(win32con.SM_CYICON)
 
+    print('Looking for ' + final_name)
     large, small = win32gui.ExtractIconEx(filename, 0)
     win32gui.DestroyIcon(small[0])
 

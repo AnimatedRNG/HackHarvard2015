@@ -1,13 +1,23 @@
-import socket
+import SocketServer
 import sys
+import pygame
+from pygame.locals import *
+from display2 import Renderer2
 from thread import *
+import time
+from ctypes import windll
 
-HOST = ''
+HOST = 'localhost'
 PORT = 25525
+LISTEN = 1000
 
+SW_RESTORE = 9
+SW_MAXIMIZE = 3
+
+renderer = None
 
 def setupServer():
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    """s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print('Socket created')
 
     try:
@@ -16,46 +26,48 @@ def setupServer():
         print('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
         sys.exit()
 
-    s.listen(2)
-    return s
+    s.listen(LISTEN)"""
+    print("Setting up TCP server")
+    s = SocketServer.ThreadingTCPServer((HOST, PORT), TCPHandler)
+    s.serve_forever()
 
+class TCPHandler(SocketServer.BaseRequestHandler):
 
-def acceptCommand(s):
-    print('Socket now listening')
-    while True:
-        conn, addr = s.accept()
-        print('Connected with ' + addr[0] + ':' + str(addr[1]))
+    def handle(self):
 
+        print("Connection established")
         while True:
-            try:
-                res = conn.recv(1024)
-            except socket.error as msg:
-                yield('Disconnected')
-                return
-            print('Received ' + str(res))
-            yield(res)
-
-
-def closeSocket(s):
-    s.close()
+            self.data = self.request.recv(1024).strip()
+            print("Received: " + str(self.data))
+            start_new_thread(commandReceived, (self.data,))
 
 
 def start():
-    s = setupServer()
-    start_new_thread(run, (s,))
+    setupServer()
 
 
-def run(s):
-    command = acceptCommand(s)
-    while True:
-        command_string = next(command)
-        if command_string == 'Disconnected':
-            print('Disconnected')
-            return
-        # do something with the command
+def launchClient():
+    import subprocess
+    subprocess.call("bin/client.exe")
+
+
+def commandReceived(command_string):
+    if command_string == 'Disconnected':
+        print('Disconnected')
+        return
+    if command_string == 'op':
+        print('Show window!')
+        windll.user32.ShowWindow(pygame.display.get_wm_info()['window'], SW_RESTORE)
+    elif command_string == 'cl':
+        print('Attempting to minimize window')
+        pygame.display.iconify()
+    else:
+        renderer.select(command_string)
 
 
 if __name__ == "__main__":
-    start()
-    while 1:
-        pass
+    start_new_thread(start, ())
+    time.sleep(1)
+    start_new_thread(launchClient, ())
+    renderer = Renderer2()
+    renderer.start()

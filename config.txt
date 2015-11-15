@@ -1,3 +1,2 @@
-0-r_-r_: "test"
-0-r_-u_: "test2"
-0-l_-d_: "test3"
+0-r_-r_: "C:\\Program Files (x86)\\Audacity\\audacity.exe"
+0-r_-u_: "C:\\Program Files (x86)\\BioShock Infinite\\Launcher.exe"
