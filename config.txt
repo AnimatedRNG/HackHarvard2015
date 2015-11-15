@@ -1,2 +1,2 @@
 0-r_-r_: "C:\\Program Files (x86)\\Audacity\\audacity.exe"
-0-r_-u_: "C:\\Program Files (x86)\\BioShock Infinite\\Launcher.exe"
+0-l_-u_: "C:\\Program Files (x86)\\BioShock Infinite\\Launcher.exe"

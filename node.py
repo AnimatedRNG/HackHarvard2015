@@ -20,6 +20,8 @@ DOWN_RIGHT dr
 """
 
 def genRule(line, rules):
+    if line[0] == '#':
+        return
     assert line[0] == '0', 'Rule does not start with root node!'
     i = 1
     currentLevel = rules

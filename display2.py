@@ -88,27 +88,44 @@ class Renderer2:
 
     
     def cacheIcons(self, rules):
+        print("Caching icons")
         collapsed_possibilities = node.get_child_collapsed_possibilities(rules)
         for key, child in collapsed_possibilities.iteritems():
+            print('Child is ' + str(child))
+            if isinstance(child, basestring):
+                iconHash = str(hash(child))[:8]
+                
+                if child != "C:\\Program Files (x86)\\Audacity\\audacity.exe":
+                    #iconName = iconName.replace('\\', '\\\\')
+                    print(child)
+                icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
+                #icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
+                self.cachedIcons[child] = icons.imageFromFile(iconHash, 64, 64)
+                return
             for iconName in child:
                 iconHash = str(hash(iconName))[:8]
-                #icons.loadFile(iconName, iconHash)
+                
+                if iconName != "C:\\Program Files (x86)\\Audacity\\audacity.exe":
+                    #iconName = iconName.replace('\\', '\\\\')
+                    print(iconName)
                 icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
+                #icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
                 self.cachedIcons[iconName] = icons.imageFromFile(iconHash, 64, 64)
 
 
     def drawIcons(self): 
         collapsed_possibilities = node.get_child_collapsed_possibilities(self.currentGesture)
         for key, child in collapsed_possibilities.iteritems():
-            print("Key: " + key)
             iconLocation = self.nodeInDirection(self.currentNode, key)
             
             cachedIconList = []
             for cachedIconName in child:
                 cachedIconList.append(self.cachedIcons[cachedIconName])
             
+            if len(cachedIconList) == 0:
+                return
+            
             joined = icons.joinImages(cachedIconList, 64, 64)
-            print("Planning to draw icon at " + str(iconLocation))
             self.screen.blit(joined, self.dotDict[iconLocation])
 
 
