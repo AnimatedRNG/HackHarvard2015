@@ -2,6 +2,12 @@ import pygame
 import node
 import icons
 from pygame.locals import *
+import subprocess
+from thread import *
+import os
+import time
+from ctypes import windll
+import util
 
 class Background(pygame.sprite.Sprite):
     def __init__(self, image_file, location):
@@ -78,12 +84,13 @@ class Renderer2:
         
         if not isinstance(self.currentGesture, dict):
             print('Running application: ' + self.currentGesture)
-            import subprocess
-            from thread import *
-            a = subprocess.Popen
-            start_new_thread(a, ("\"" + self.currentGesture + "\"",))
+            #a = subprocess.Popen
+            a = os.system
+            start_new_thread(a, ("\"" + self.currentGesture + "\"",))            
             self.resetAll()
-            # We've gotta launch the application and reset the state
+            util.hide()
+            time.sleep(1)
+
 
     def render(self):
         self.screen.fill((0, 0, 0))
@@ -103,21 +110,15 @@ class Renderer2:
                 
                 keepcharacters = (' ','.','_')
                 child = "".join(c for c in child if c.isalnum() or c in keepcharacters).rstrip()
-                if child != "C:\\Program Files (x86)\\Steam\\Steam.exe":
-                    #iconName = iconName.replace('\\', '\\\\')
-                    print('Something screwed up: ' + child)
                 icons.loadFile(child, iconHash)
                 #icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
-                self.cachedIcons[child] = icons.imageFromFile(iconHash, 64, 64)
+                self.cachedIcons[child] = icons.imageFromFile(iconHash, 32, 32)
                 return
             for iconName in child:
                 iconHash = str(hash(iconName))[:8]
                 
                 keepcharacters = (' ','.','_')
                 child = "".join(c for c in iconName if c.isalnum() or c in keepcharacters).rstrip()
-                if iconName != "C:\\Program Files (x86)\\Steam\\Steam.exe":
-                    #iconName = iconName.replace('\\', '\\\\')
-                    print('Something screwed up: ' + iconName)
                 icons.loadFile(iconName, iconHash)
                 #icons.loadFile("C:\\Program Files (x86)\\Steam\\Steam.exe", iconHash)
                 #icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
@@ -129,7 +130,7 @@ class Renderer2:
         self.currentNode = (1, 1)
         self.oldNodes = []
         
-        self.cachedIcons = {}
+        #self.cachedIcons = {}
 
 
     def drawIcons(self): 
@@ -138,7 +139,7 @@ class Renderer2:
             return
             
         collapsed_possibilities = node.get_child_collapsed_possibilities(self.currentGesture)
-        print('collapsed_possibilities: ' + str(collapsed_possibilities))
+        #print('collapsed_possibilities: ' + str(collapsed_possibilities))
         for key, child in collapsed_possibilities.iteritems():
             iconLocation = self.nodeInDirection(self.currentNode, key)
             
@@ -153,7 +154,7 @@ class Renderer2:
                 return
             
             joined = icons.joinImages(cachedIconList, 64, 64)
-            print('Drawing an icon at ' + str(iconLocation))
+            #print('Drawing an icon at ' + str(iconLocation))
             self.screen.blit(joined, self.dotDict[iconLocation])
 
 

@@ -6,13 +6,11 @@ from display2 import Renderer2
 from thread import *
 import time
 from ctypes import windll
+import util
 
 HOST = 'localhost'
 PORT = 25525
 LISTEN = 1000
-
-SW_RESTORE = 9
-SW_MAXIMIZE = 3
 
 renderer = None
 
@@ -57,10 +55,11 @@ def commandReceived(command_string):
         return
     if command_string == 'op':
         print('Show window!')
-        #windll.user32.ShowWindow(pygame.display.get_wm_info()['window'], SW_RESTORE)
+        util.show()
     elif command_string == 'cl':
         print('Attempting to minimize window')
-        #pygame.display.iconify()
+        util.hide()
+        renderer.resetAll()
     else:
         renderer.select(command_string)
 

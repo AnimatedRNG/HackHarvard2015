@@ -34,6 +34,13 @@ def imageFromFile(final_name, width, height):
 
 # Shrinks mutliple spries togehter
 def joinImages(images, width, height):
+    if (len(images) == 1):
+        img_surface = pygame.Surface((int(width), int(height)))
+        resized_image = pygame.Surface((images[0].get_rect().width, images[0].get_rect().height))
+        resized_image.blit(images[0], (0, 0))
+        pygame.transform.scale(resized_image, (width, height))
+        img_surface.blit(resized_image, (0, 0))
+        return img_surface
     order = int(log(len(images)) / log(2)) + 1
     img_surface = pygame.Surface((int(width), int(height)))
     dx, dy = width / order, height / order

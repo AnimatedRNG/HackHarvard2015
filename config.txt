@@ -1,2 +1,4 @@
 0-r_-u_: "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
 0-l_-u_: "C:\\Program Files (x86)\\Steam\\Steam.exe"
+0-d_-l_-u_: "C:\\Program Files (x86)\\Skype\\Phone\\Skype.exe"
+0-l_-d_: "C:\\Program Files (x86)\\Mozilla Thunderbird\\thunderbird.exe"
