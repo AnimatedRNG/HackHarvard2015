@@ -24,7 +24,7 @@ def setupServer():
         s.bind((HOST, PORT))
     except socket.error as msg:
         print('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
-        sys.exit()
+        sys.exit()`
 
     s.listen(LISTEN)"""
     print("Setting up TCP server")
@@ -57,10 +57,10 @@ def commandReceived(command_string):
         return
     if command_string == 'op':
         print('Show window!')
-        windll.user32.ShowWindow(pygame.display.get_wm_info()['window'], SW_RESTORE)
+        #windll.user32.ShowWindow(pygame.display.get_wm_info()['window'], SW_RESTORE)
     elif command_string == 'cl':
         print('Attempting to minimize window')
-        pygame.display.iconify()
+        #pygame.display.iconify()
     else:
         renderer.select(command_string)
 

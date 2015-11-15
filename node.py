@@ -25,20 +25,24 @@ def genRule(line, rules):
     assert line[0] == '0', 'Rule does not start with root node!'
     i = 1
     currentLevel = rules
+    prevLevel = None
     while(line[i] != ':'):
+        print('Rules: ' + str(currentLevel))
         assert line[i] == '-', 'Invalid config at line: \n' + line
         move = line[i+1:i+3]
         assert move in MOVES
         if not (move in currentLevel):
             currentLevel[move] = {}
-        else:
-            currentLevel = currentLevel[move]
+        #else:
+        prevLevel = currentLevel
+        currentLevel = currentLevel[move]
         i += 3
         assert i + 3 < len(line), 'Invaid config at line: \n' + line
 
     assert (line[i + 1] == ' ' or line[i + 1] == '\t'), 'Character after : must be whitespace'
     assert (line[i + 2] == "\"" and line[-2] == "\""), 'Command must be enclosed in quotations'
-    currentLevel[move] = line[i + 3: len(line) - 1]
+    prevLevel[move] = line[i + 3: len(line) - 1]
+    #currentLevel = line[i + 3: len(line) - 1]
 
 
 def get_child_collapsed_possibilities(rules):

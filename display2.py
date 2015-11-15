@@ -65,7 +65,8 @@ class Renderer2:
         new_node = self.currentNode
         new_node = self.nodeInDirection(new_node, direction)
         
-        if new_node == None:
+        if new_node == None or not (direction in self.currentGesture):
+            print('Bad choice')
             return;
         
         self.oldNodes.append(self.currentNode)
@@ -76,7 +77,9 @@ class Renderer2:
         self.currentGesture = self.currentGesture[direction]
         
         if not isinstance(self.currentGesture, dict):
-            pass
+            print('Running application: ' + self.currentGesture)
+            import subprocess
+            subprocess.call("\"" + self.currentGesture + "\"", shell=True)
             # We've gotta launch the application and reset the state
 
     def render(self):
@@ -114,18 +117,27 @@ class Renderer2:
 
 
     def drawIcons(self): 
+        if isinstance(self.currentGesture, str):
+            #print('Current Gesture is a string')
+            return
+            
         collapsed_possibilities = node.get_child_collapsed_possibilities(self.currentGesture)
+        print('collapsed_possibilities: ' + str(collapsed_possibilities))
         for key, child in collapsed_possibilities.iteritems():
             iconLocation = self.nodeInDirection(self.currentNode, key)
             
             cachedIconList = []
-            for cachedIconName in child:
-                cachedIconList.append(self.cachedIcons[cachedIconName])
+            if isinstance(child, str):
+                cachedIconList.append(self.cachedIcons[child])
+            else:
+                for cachedIconName in child:
+                    cachedIconList.append(self.cachedIcons[cachedIconName])
             
             if len(cachedIconList) == 0:
                 return
             
             joined = icons.joinImages(cachedIconList, 64, 64)
+            print('Drawing an icon at ' + str(iconLocation))
             self.screen.blit(joined, self.dotDict[iconLocation])
 
 
@@ -152,12 +164,14 @@ class Renderer2:
             new_node = (self.currentNode[0] - 1, self.currentNode[1] - 1)
         elif direction == 'l_':
             new_node = (self.currentNode[0] - 1, self.currentNode[1])
-        elif direction == 'dl':
+        elif direction == 'ld':
             new_node = (self.currentNode[0] - 1, self.currentNode[1] + 1)
         elif direction == 'd_':
             new_node = (self.currentNode[0], self.currentNode[1] + 1)
         elif direction == 'dr':
             new_node = (self.currentNode[0] + 1, self.currentNode[1] + 1)
+        else:
+            print('WTF: ' + direction)
         
         for e in new_node:
             if e < 0 or e > 2:
