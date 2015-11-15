@@ -79,7 +79,10 @@ class Renderer2:
         if not isinstance(self.currentGesture, dict):
             print('Running application: ' + self.currentGesture)
             import subprocess
-            subprocess.call("\"" + self.currentGesture + "\"", shell=True)
+            from thread import *
+            a = subprocess.Popen
+            start_new_thread(a, ("\"" + self.currentGesture + "\"",))
+            self.resetAll()
             # We've gotta launch the application and reset the state
 
     def render(self):
@@ -98,22 +101,35 @@ class Renderer2:
             if isinstance(child, basestring):
                 iconHash = str(hash(child))[:8]
                 
+                keepcharacters = (' ','.','_')
+                child = "".join(c for c in child if c.isalnum() or c in keepcharacters).rstrip()
                 if child != "C:\\Program Files (x86)\\Steam\\Steam.exe":
                     #iconName = iconName.replace('\\', '\\\\')
-                    print(child)
-                icons.loadFile("C:\\Program Files (x86)\\Steam\\Steam.exe", iconHash)
+                    print('Something screwed up: ' + child)
+                icons.loadFile(child, iconHash)
                 #icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
                 self.cachedIcons[child] = icons.imageFromFile(iconHash, 64, 64)
                 return
             for iconName in child:
                 iconHash = str(hash(iconName))[:8]
                 
+                keepcharacters = (' ','.','_')
+                child = "".join(c for c in iconName if c.isalnum() or c in keepcharacters).rstrip()
                 if iconName != "C:\\Program Files (x86)\\Steam\\Steam.exe":
                     #iconName = iconName.replace('\\', '\\\\')
-                    print(iconName)
-                icons.loadFile("C:\\Program Files (x86)\\Steam\\Steam.exe", iconHash)
+                    print('Something screwed up: ' + iconName)
+                icons.loadFile(iconName, iconHash)
+                #icons.loadFile("C:\\Program Files (x86)\\Steam\\Steam.exe", iconHash)
                 #icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
                 self.cachedIcons[iconName] = icons.imageFromFile(iconHash, 64, 64)
+
+
+    def resetAll(self):
+        self.currentGesture = node.read_from_file()
+        self.currentNode = (1, 1)
+        self.oldNodes = []
+        
+        self.cachedIcons = {}
 
 
     def drawIcons(self): 
@@ -215,6 +231,6 @@ class Rectangle:
         if self.myX <= (end_x - x_coor):
             pygame.draw.rect(self.screen, (255,0,0), (x_coor+32,y_coor+14, self.myX,40), 0)
 
-if __name__ == '__main__':
-    renderer = Renderer2()
-    renderer.start()
+#if __name__ == '__main__':
+#    renderer = Renderer2()
+#    renderer.start()

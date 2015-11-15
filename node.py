@@ -41,7 +41,7 @@ def genRule(line, rules):
 
     assert (line[i + 1] == ' ' or line[i + 1] == '\t'), 'Character after : must be whitespace'
     assert (line[i + 2] == "\"" and line[-2] == "\""), 'Command must be enclosed in quotations'
-    prevLevel[move] = line[i + 3: len(line) - 1]
+    prevLevel[move] = line[i + 3: len(line) - 2]
     #currentLevel = line[i + 3: len(line) - 1]
 
 
