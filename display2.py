@@ -98,20 +98,20 @@ class Renderer2:
             if isinstance(child, basestring):
                 iconHash = str(hash(child))[:8]
                 
-                if child != "C:\\Program Files (x86)\\Steam\\Steam.exe":
+                if child != r"C:\Program Files (x86)\Steam\Steam.exe":
                     #iconName = iconName.replace('\\', '\\\\')
                     print(child)
-                icons.loadFile("C:\\Program Files (x86)\\Steam\\Steam.exe", iconHash)
+                icons.loadFile(r"C:\Program Files (x86)\Steam\Steam.exe", iconHash)
                 #icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
                 self.cachedIcons[child] = icons.imageFromFile(iconHash, 64, 64)
                 return
             for iconName in child:
                 iconHash = str(hash(iconName))[:8]
                 
-                if iconName != "C:\\Program Files (x86)\\Steam\\Steam.exe":
+                if iconName != r"C:\Program Files (x86)\Steam\Steam.exe":
                     #iconName = iconName.replace('\\', '\\\\')
                     print(iconName)
-                icons.loadFile("C:\\Program Files (x86)\\Steam\\Steam.exe", iconHash)
+                icons.loadFile(r"C:\Program Files (x86)\Steam\Steam.exe", iconHash)
                 #icons.loadFile("C:\\Program Files (x86)\\Audacity\\audacity.exe", iconHash)
                 self.cachedIcons[iconName] = icons.imageFromFile(iconHash, 64, 64)
 
